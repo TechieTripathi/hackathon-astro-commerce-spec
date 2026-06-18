@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Astro Commerce Hackathon Docs</title>
+    <meta
+      name="description"
+      content="Frontend and backend implementation documents for the Astro Commerce hackathon."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <strong class="hero-title">Astro Commerce Hackathon Docs</strong>
+        <p class="hero-meta">
+          <span>MongoDB</span>
+          <span>Backend + Frontend</span>
+          <span>Single Vendor, India Only</span>
+        </p>
+        <nav class="hero-actions" aria-label="Quick links">
+          <a id="hero-backend-link" class="hero-link" href="#doc=backend/features.md">Backend</a>
+          <a id="hero-frontend-link" class="hero-link" href="#doc=frontend/frontend-pages.md">Frontend</a>
+        </nav>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <div class="sidebar-block">
+            <label class="search-label" for="doc-search">Find a document</label>
+            <input id="doc-search" class="search-input" type="search" placeholder="Search docs..." />
+          </div>
+
+          <div class="sidebar-block">
+            <div class="section-heading">
+              <span>Backend</span>
+              <span class="section-pill">Core</span>
+            </div>
+            <nav id="backend-nav" class="doc-nav"></nav>
+          </div>
+
+          <div class="sidebar-block">
+            <div class="section-heading">
+              <span>Frontend</span>
+              <span class="section-pill">Handoff</span>
+            </div>
+            <nav id="frontend-nav" class="doc-nav"></nav>
+          </div>
+
+          <div class="sidebar-block mini-note">
+            <p>Suggested reading order</p>
+            <ol>
+              <li>Backend features</li>
+              <li>API documentation</li>
+              <li>Frontend pages</li>
+              <li>Frontend state contract</li>
+            </ol>
+          </div>
+        </aside>
+
+        <section class="content">
+          <div class="toolbar">
+            <section class="toolbar-copy">
+              <p id="doc-group" class="toolbar-kicker">Backend</p>
+              <h2 id="doc-title">Loading...</h2>
+              <p id="doc-summary" class="toolbar-summary"></p>
+            </section>
+            <nav class="toolbar-actions" aria-label="Document actions">
+              <a id="raw-link" class="toolbar-link" href="#" target="_blank" rel="noreferrer">Open raw file</a>
+              <button id="copy-link" class="toolbar-link" type="button">Copy deep link</button>
+            </nav>
+          </div>
+
+          <div id="status-banner" class="status-banner" hidden></div>
+
+          <article id="doc-content" class="doc-content">
+            <div class="loading-state">
+              <div class="loading-line"></div>
+              <div class="loading-line short"></div>
+              <div class="loading-line"></div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./site.js"></script>
+  </body>
+</html>

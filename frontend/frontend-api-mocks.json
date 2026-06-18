@@ -1,0 +1,271 @@
+{
+  "authLoginSuccess": {
+    "success": true,
+    "message": "Login successful",
+    "data": {
+      "accessToken": "jwt_access_token",
+      "refreshToken": "refresh_token",
+      "user": {
+        "id": "665c8f9f8c3c2d7f9b8a1234",
+        "firstName": "Vishnu",
+        "lastName": "Sharma",
+        "username": "vishnu123",
+        "email": "vishnu@example.com",
+        "phoneNumber": "+919876543210",
+        "role": "customer"
+      }
+    }
+  },
+  "profile": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "id": "665c8f9f8c3c2d7f9b8a1234",
+      "firstName": "Vishnu",
+      "lastName": "Sharma",
+      "username": "vishnu123",
+      "email": "vishnu@example.com",
+      "phoneNumber": "+919876543210",
+      "avatarUrl": "https://cdn.example.com/users/avatar.jpg",
+      "role": "customer",
+      "createdAt": "2026-06-16T10:00:00Z",
+      "updatedAt": "2026-06-16T10:00:00Z"
+    }
+  },
+  "categories": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "items": [
+        {
+          "id": "665c902f8c3c2d7f9b8a1242",
+          "name": "Gemstones",
+          "slug": "gemstones",
+          "description": "Natural astrology gemstones",
+          "imageUrl": "https://cdn.example.com/categories/gemstones.jpg"
+        }
+      ]
+    }
+  },
+  "productsList": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "page": 1,
+      "limit": 20,
+      "total": 1,
+      "totalPages": 1,
+      "items": [
+        {
+          "id": "665c903f8c3c2d7f9b8a1243",
+          "name": "Natural Ruby Ring",
+          "slug": "natural-ruby-ring",
+          "shortDescription": "Certified natural ruby ring",
+          "coverImageUrl": "https://cdn.example.com/products/ruby-cover.jpg",
+          "minPrice": "7999.00",
+          "maxPrice": "10999.00",
+          "isFeatured": true,
+          "isInStock": true
+        }
+      ]
+    }
+  },
+  "productDetail": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "id": "665c903f8c3c2d7f9b8a1243",
+      "name": "Natural Ruby Ring",
+      "slug": "natural-ruby-ring",
+      "shortDescription": "Certified natural ruby ring",
+      "description": "Premium certified ruby ring for astrology purposes.",
+      "coverImageUrl": "https://cdn.example.com/products/ruby-cover.jpg",
+      "images": [
+        {
+          "id": "665c903f8c3c2d7f9b8a1244",
+          "imageUrl": "https://cdn.example.com/products/ruby-cover.jpg",
+          "altText": "Ruby ring front view",
+          "displayOrder": 1
+        }
+      ],
+      "attributes": [
+        {
+          "code": "carat",
+          "label": "Carat",
+          "type": "number",
+          "isRequired": true,
+          "isFilterable": true,
+          "isVariantAxis": true,
+          "options": []
+        },
+        {
+          "code": "metal",
+          "label": "Metal",
+          "type": "select",
+          "isRequired": true,
+          "isFilterable": true,
+          "isVariantAxis": true,
+          "options": ["gold", "silver"]
+        }
+      ],
+      "variants": [
+        {
+          "id": "665c903f8c3c2d7f9b8a1245",
+          "skuCode": "RUBY-RING-5.25-GOLD",
+          "variantName": "5.25 Carat / Gold",
+          "attributeValues": [
+            {
+              "code": "carat",
+              "value": "5.25"
+            },
+            {
+              "code": "metal",
+              "value": "gold"
+            }
+          ],
+          "price": "7999.00",
+          "compareAtPrice": "8999.00",
+          "availableQuantity": 25,
+          "isActive": true
+        }
+      ],
+      "reviewsSummary": {
+        "averageRating": "4.70",
+        "totalReviews": 10
+      }
+    }
+  },
+  "cart": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "id": "665c905f8c3c2d7f9b8a1244",
+      "items": [
+        {
+          "id": "665c905f8c3c2d7f9b8a1246",
+          "productId": "665c903f8c3c2d7f9b8a1243",
+          "productSkuId": "665c903f8c3c2d7f9b8a1245",
+          "productName": "Natural Ruby Ring",
+          "skuCode": "RUBY-RING-5.25-GOLD",
+          "variantName": "5.25 Carat / Gold",
+          "coverImageUrl": "https://cdn.example.com/products/ruby-cover.jpg",
+          "quantity": 2,
+          "unitPrice": "7999.00",
+          "lineTotal": "15998.00",
+          "isAvailable": true
+        }
+      ],
+      "pricing": {
+        "subTotal": "15998.00",
+        "discountTotal": "500.00",
+        "shippingFee": "0.00",
+        "codFee": "0.00",
+        "taxTotal": "0.00",
+        "grandTotal": "15498.00"
+      },
+      "couponCode": "WELCOME10"
+    }
+  },
+  "checkoutPreview": {
+    "success": true,
+    "message": "Checkout preview generated",
+    "data": {
+      "subTotal": "15998.00",
+      "discountTotal": "500.00",
+      "shippingFee": "0.00",
+      "codFee": "0.00",
+      "taxTotal": "0.00",
+      "grandTotal": "15498.00"
+    }
+  },
+  "placeOrder": {
+    "success": true,
+    "message": "Order placed",
+    "data": {
+      "orderId": "665c907f8c3c2d7f9b8a1246",
+      "orderNumber": "ORD-20260616-0001",
+      "status": "pending",
+      "paymentMethod": "razorpay",
+      "reservationExpiresAt": "2026-06-16T10:15:00Z"
+    }
+  },
+  "orderDetail": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "id": "665c907f8c3c2d7f9b8a1246",
+      "orderNumber": "ORD-20260616-0001",
+      "status": "confirmed",
+      "paymentMethod": "razorpay",
+      "pricing": {
+        "subTotal": "15998.00",
+        "discountTotal": "500.00",
+        "shippingFee": "0.00",
+        "codFee": "0.00",
+        "taxTotal": "0.00",
+        "grandTotal": "15498.00"
+      },
+      "items": [
+        {
+          "id": "665c907f8c3c2d7f9b8a1249",
+          "productId": "665c903f8c3c2d7f9b8a1243",
+          "productSkuId": "665c903f8c3c2d7f9b8a1245",
+          "productName": "Natural Ruby Ring",
+          "skuCode": "RUBY-RING-5.25-GOLD",
+          "variantName": "5.25 Carat / Gold",
+          "coverImageUrl": "https://cdn.example.com/products/ruby-cover.jpg",
+          "quantity": 2,
+          "unitPrice": "7999.00",
+          "lineTotal": "15998.00",
+          "returnableUntil": "2026-07-01T10:00:00Z"
+        }
+      ],
+      "shipment": {
+        "courierName": null,
+        "trackingNumber": null,
+        "awbNumber": null,
+        "trackingUrl": null
+      }
+    }
+  },
+  "returnDetail": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "id": "665c90af8c3c2d7f9b8a1250",
+      "returnNumber": "RET-20260620-0001",
+      "status": "requested",
+      "items": [
+        {
+          "orderItemId": "665c907f8c3c2d7f9b8a1249",
+          "quantity": 1,
+          "refundAmount": "7999.00"
+        }
+      ],
+      "refund": {
+        "refundAmount": "7999.00",
+        "refundStatus": "pending"
+      }
+    }
+  },
+  "adminDashboard": {
+    "success": true,
+    "message": "Success",
+    "data": {
+      "ordersToday": 10,
+      "paymentsToday": "120000.00",
+      "pendingReturns": 2,
+      "lowStockSkus": 4
+    }
+  },
+  "validationError": {
+    "success": false,
+    "message": "Validation Failed",
+    "errors": [
+      {
+        "field": "phoneNumber",
+        "message": "Phone number must be in E.164 format"
+      }
+    ]
+  }
+}
