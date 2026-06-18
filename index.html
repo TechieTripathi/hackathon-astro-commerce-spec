@@ -19,20 +19,29 @@
   <body>
     <div class="page-shell">
       <header class="hero">
+        <button
+          id="sidebar-toggle"
+          class="sidebar-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="sidebar"
+          aria-label="Open document navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <strong class="hero-title">Astro Commerce Hackathon Docs</strong>
         <p class="hero-meta">
           <span>MongoDB</span>
           <span>Backend + Frontend</span>
           <span>Single Vendor, India Only</span>
         </p>
-        <nav class="hero-actions" aria-label="Quick links">
-          <a id="hero-backend-link" class="hero-link" href="#doc=backend/features.md">Backend</a>
-          <a id="hero-frontend-link" class="hero-link" href="#doc=frontend/frontend-pages.md">Frontend</a>
-        </nav>
       </header>
 
       <main class="layout">
-        <aside class="sidebar">
+        <button id="sidebar-backdrop" class="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
+        <aside id="sidebar" class="sidebar">
           <div class="sidebar-block">
             <label class="search-label" for="doc-search">Find a document</label>
             <input id="doc-search" class="search-input" type="search" placeholder="Search docs..." />

@@ -53,8 +53,9 @@ const docContent = document.querySelector("#doc-content");
 const rawLink = document.querySelector("#raw-link");
 const copyLinkButton = document.querySelector("#copy-link");
 const statusBanner = document.querySelector("#status-banner");
-const heroBackendLink = document.querySelector("#hero-backend-link");
-const heroFrontendLink = document.querySelector("#hero-frontend-link");
+const sidebar = document.querySelector("#sidebar");
+const sidebarToggle = document.querySelector("#sidebar-toggle");
+const sidebarBackdrop = document.querySelector("#sidebar-backdrop");
 
 marked.setOptions({
   breaks: true,
@@ -70,6 +71,11 @@ function setSelectedDocId(id) {
   const hash = new URLSearchParams();
   hash.set("doc", id);
   window.location.hash = hash.toString();
+}
+
+function setSidebarOpen(isOpen) {
+  document.body.classList.toggle("sidebar-open", isOpen);
+  sidebarToggle?.setAttribute("aria-expanded", String(isOpen));
 }
 
 function renderNav(filterText = "") {
@@ -93,7 +99,10 @@ function renderNav(filterText = "") {
         button.className = "doc-link";
         button.dataset.docId = doc.id;
         button.innerHTML = `<strong>${doc.title}</strong><small>${doc.summary}</small>`;
-        button.addEventListener("click", () => setSelectedDocId(doc.id));
+        button.addEventListener("click", () => {
+          setSelectedDocId(doc.id);
+          setSidebarOpen(false);
+        });
         container.appendChild(button);
       });
   };
@@ -105,14 +114,10 @@ function renderNav(filterText = "") {
 
 function updateActiveNav() {
   const selected = getSelectedDocId();
-  const activeDoc = docs.find((item) => item.id === selected) || docs[0];
 
   document.querySelectorAll(".doc-link").forEach((link) => {
     link.classList.toggle("is-active", link.dataset.docId === selected);
   });
-
-  heroBackendLink.classList.toggle("is-active", activeDoc.group === "Backend");
-  heroFrontendLink.classList.toggle("is-active", activeDoc.group === "Frontend");
 }
 
 function showStatus(message) {
@@ -133,11 +138,151 @@ function renderContent(rawText, doc) {
   }
 
   if (extension === "json" || extension === "ts") {
-    docContent.innerHTML = `<pre><code>${escapeHtml(rawText)}</code></pre>`;
+    renderCodeBlock(rawText, extension);
     return;
   }
 
   docContent.textContent = rawText;
+}
+
+function renderCodeBlock(rawText, extension) {
+  const panel = document.createElement("section");
+  panel.className = "code-panel";
+
+  const header = document.createElement("div");
+  header.className = "code-panel-header";
+
+  const label = document.createElement("p");
+  label.className = "code-panel-label";
+  label.textContent = extension === "json" ? "JSON Reference" : "TypeScript Reference";
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "code-copy-button";
+  button.textContent = "Copy code";
+  button.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(rawText);
+      button.textContent = "Copied";
+      setTimeout(() => {
+        button.textContent = "Copy code";
+      }, 1400);
+    } catch {
+      showStatus("Could not copy the code automatically. Select and copy it manually.");
+    }
+  });
+
+  header.append(label, button);
+
+  const pre = document.createElement("pre");
+  pre.className = `code-view code-view-${extension}`;
+
+  const code = document.createElement("code");
+  code.innerHTML = extension === "json" ? highlightJson(rawText) : highlightTypeScript(rawText);
+
+  pre.appendChild(code);
+  panel.append(header, pre);
+
+  docContent.innerHTML = "";
+  docContent.appendChild(panel);
+}
+
+function highlightJson(text) {
+  const tokenRegex =
+    /("(?:\\.|[^"\\])*")(\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|[{}\[\],:]/g;
+  let cursor = 0;
+  let html = "";
+
+  for (const match of text.matchAll(tokenRegex)) {
+    const index = match.index ?? 0;
+    const token = match[0];
+    const stringToken = match[1];
+    const colonToken = match[2];
+
+    html += escapeHtml(text.slice(cursor, index));
+
+    if (stringToken && colonToken) {
+      html += `<span class="token-key">${escapeHtml(stringToken)}</span><span class="token-punctuation">${escapeHtml(
+        colonToken
+      )}</span>`;
+    } else if (stringToken) {
+      html += `<span class="token-string">${escapeHtml(stringToken)}</span>`;
+    } else {
+      html += `<span class="${classifyJsonPrimitive(token)}">${escapeHtml(token)}</span>`;
+    }
+
+    cursor = index + token.length;
+  }
+
+  html += escapeHtml(text.slice(cursor));
+  return html;
+}
+
+function classifyJsonPrimitive(token) {
+  if (token === "true" || token === "false") {
+    return "token-boolean";
+  }
+
+  if (token === "null") {
+    return "token-null";
+  }
+
+  if (/^-?\d/.test(token)) {
+    return "token-number";
+  }
+
+  return "token-punctuation";
+}
+
+function highlightTypeScript(text) {
+  const tokenRegex =
+    /\/\/.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|\b(?:export|type|const|let|var|return|if|else|true|false|null|undefined)\b|\b(?:string|number|boolean|unknown|never|void)\b|-?\d+(?:\.\d+)?|[{}[\](),.:;|<>?=]/gm;
+  return highlightWithTokenizer(text, tokenRegex, classifyTypeScriptToken);
+}
+
+function classifyTypeScriptToken(token) {
+  if (token.startsWith("//")) {
+    return "token-comment";
+  }
+
+  if (/^["'`]/.test(token)) {
+    return "token-string";
+  }
+
+  if (/^-?\d/.test(token)) {
+    return "token-number";
+  }
+
+  if (/^(true|false|null|undefined)$/.test(token)) {
+    return "token-boolean";
+  }
+
+  if (/^(export|type|const|let|var|return|if|else)$/.test(token)) {
+    return "token-keyword";
+  }
+
+  if (/^(string|number|boolean|unknown|never|void)$/.test(token)) {
+    return "token-type";
+  }
+
+  return "token-punctuation";
+}
+
+function highlightWithTokenizer(text, tokenRegex, classifyToken) {
+  let cursor = 0;
+  let html = "";
+
+  for (const match of text.matchAll(tokenRegex)) {
+    const index = match.index ?? 0;
+    const token = match[0];
+
+    html += escapeHtml(text.slice(cursor, index));
+    html += `<span class="${classifyToken(token)}">${escapeHtml(token)}</span>`;
+    cursor = index + token.length;
+  }
+
+  html += escapeHtml(text.slice(cursor));
+  return html;
 }
 
 function escapeHtml(text) {
@@ -165,6 +310,19 @@ async function loadDoc() {
       <div class="loading-line"></div>
     </div>
   `;
+
+  if (window.location.protocol === "file:") {
+    showStatus("This docs viewer must be opened through a local HTTP server, not directly via file://.");
+    docContent.innerHTML = `
+      <h3>Local server required</h3>
+      <p>Browser security blocks loading <code>.md</code>, <code>.json</code>, and <code>.ts</code> files with <code>fetch()</code> when this page is opened directly from disk.</p>
+      <p>Run this from the repository root:</p>
+      <pre><code>python3 -m http.server 8765</code></pre>
+      <p>Then open:</p>
+      <pre><code>http://127.0.0.1:8765/</code></pre>
+    `;
+    return;
+  }
 
   try {
     const response = await fetch(`./${doc.id}`);
@@ -203,6 +361,21 @@ copyLinkButton.addEventListener("click", async () => {
 });
 
 window.addEventListener("hashchange", loadDoc);
+
+sidebarToggle?.addEventListener("click", () => {
+  const isOpen = document.body.classList.contains("sidebar-open");
+  setSidebarOpen(!isOpen);
+});
+
+sidebarBackdrop?.addEventListener("click", () => {
+  setSidebarOpen(false);
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 1080) {
+    setSidebarOpen(false);
+  }
+});
 
 renderNav();
 loadDoc();
