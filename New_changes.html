@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Backend Weekly Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .section {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+
+      ul {
+        line-height: 1.8;
+      }
+
+      .flow-box {
+        background: #eef5ff;
+        padding: 15px;
+        border-left: 5px solid #3498db;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Backend Development Report</h1>
+
+    <!-- Backend New Feature Section -->
+    <div class="section">
+      <h2>Backend New Features</h2>
+
+      <h3>New Changes</h3>
+
+      <ul>
+        <li>
+          <strong>Real-Time Customer Support System</strong>
+
+          <p>
+            a Real-Time Customer Support System using WebSockets, enabling
+            customers to communicate directly with support agents regarding
+            orders, payments, product issues, and delivery tracking.
+          </p>
+        </li>
+
+        <li>
+          <strong> EMI Payment Option </strong>
+
+          <p>
+            Using the Razorpay API, customers can choose EMI plans during
+            checkout. All installment payments are managed by the respective
+            bank. The system receives payment confirmations and notifications
+            from Razorpay to keep order and payment records updated.
+          </p>
+        </li>
+        <li>
+          <strong> Product Tracking Feature</strong>
+
+          <p>
+            Product Tracking Feature: There are two approaches to implement
+            product tracking. The first approach is to maintain an Order
+            Tracking table containing fields such as order_id, user_id, and
+            status. The order status is updated at different stages of the
+            delivery process, such as Pending, Packed, Shipped, Out for
+            Delivery, and Delivered. Customers can view the latest status of
+            their orders in real time. The second approach is to integrate with
+            third-party logistics providers such as Delhivery and Google Maps
+            API can be integrated to provide real-time shipment and location
+            updates.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Backend API Section -->
+    <div class="section">
+      <h2>Backend API Section</h2>
+
+      <ul>
+        <li>
+          <strong>Product Image API</strong>
+          <p>
+            Supports multiple images for a single product. Users can view
+            different product angles and variants.
+          </p>
+        </li>
+
+        <li>
+          <strong>Live Location API (Google Maps API)</strong>
+          <p>
+            Provides real-time location tracking for deliveries and orders.
+            Integrated with Google Maps for accurate navigation and tracking.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Flows Section -->
+    <div class="section">
+      <h2>System Flows</h2>
+
+      <div class="flow-box">
+        User → Browse Products → Add to Cart → Checkout → Payment → Order
+        Confirmation → Product Tracking
+      </div>
+
+      <div class="flow-box">
+        Admin → Manage Inventory → Update Product Details → Upload Product
+        Images → Monitor Orders
+      </div>
+
+      <div class="flow-box">
+        Customer → Raise Support Request → Real-Time Customer Support →
+        Resolution
+      </div>
+    </div>
+  </body>
+</html>
