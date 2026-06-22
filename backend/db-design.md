@@ -170,6 +170,14 @@ All top-level collections should include these fields unless explicitly excluded
 - `sent`
 - `failed`
 
+### product_tracking_status:
+
+- pending
+- shipped
+- out_for_delivery
+- delivered
+- cancelled
+
 ## 4. Collections
 
 ## 4.1 `users`
@@ -1040,6 +1048,22 @@ Purpose: immutable admin action journal.
 }
 ```
 
+## 4.23 `product_tracking`
+
+Purpose: Track shipment progress of a product/order at item level.
+
+```json
+{
+  "_id": "ObjectId",
+  "user_id": "ObjectId",
+  "order_id": "ObjectId",
+  "product_id": "ObjectId",
+  "PRODUCT_STATUS":"product_tracking_status (ENUM)"
+  "updated_at": "Date",
+  "created_at": "Date"
+}
+```
+
 Indexes:
 
 - index: `{ admin_user_id: 1, created_at: -1 }`
@@ -1137,3 +1161,7 @@ Note:
 - monitor text search performance before Phase 2 Meilisearch migration
 - review `orders.status + created_at` and `payments.status + created_at` indexes for admin dashboards
 - ensure webhook event uniqueness prevents replay processing
+
+```
+
+```
