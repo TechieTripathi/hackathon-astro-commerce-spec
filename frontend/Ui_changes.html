@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Changes & Roadmaps</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            color: var(--accent-green);
+            margin-top: 40px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h3 {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        code {
+            background-color: #0f172a;
+            color: #f472b6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+        }
+
+        pre {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            color: #38bdf8;
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .keyword { color: #f472b6; }
+        .type { color: #4ade80; }
+        .comment { color: #64748b; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Application Core Changes & Roadmap</h1>
+
+    <div class="card">
+        <h2>1. Missing Customer Pages & Routes</h2>
+        <ul>
+            <li>
+                <strong><code>/checkout/payment</code> (Dedicated Payment Loading/Interim Page):</strong> Before routing directly to a success state—when the Razorpay or Cashfree SDK triggers a callback—a loading state and web verification screen are required so the UI doesn't crash if the user abruptly closes the window.
+            </li>
+            <li>
+                <strong><code>/server-error</code> (500) and <code>/404</code> (Not Found) Pages:</strong> While error handling is outlined in the state contract, explicit and dedicated fallback pages for these statuses are missing from your route map.
+            </li>
+            <li>
+                <strong><code>/track-order/:orderId</code> (Live Tracking UI View):</strong> You already have the order detail view (<code>/account/orders/:orderId</code>), but the customer experience lacks an interactive, step-by-step generic vertical visual tracker or map-style timeline.
+            </li>
+            <li>
+                <strong>Support/Help Center View (<code>/support</code> or <code>/faq</code>):</strong> Where will a customer go to resolve order or refund queries? An interactive FAQ component or a support ticket log UI is currently missing.
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>2. Missing Admin Pages & Routes</h2>
+        <ul>
+            <li>
+                <strong><code>/admin/banners</code> or <code>/admin/cms</code> (Content Management System):</strong> The customer application includes sections like Featured categories, Featured products, and Recommendations blocks, but there is no interface for an admin to update them. A dedicated layout manager page is required to upload banners and toggle homepage sections.
+            </li>
+            <li>
+                <strong><code>/admin/users/:userId</code> (User Activity & Detail View):</strong> The user list view (<code>/admin/users</code>) exists, but a detailed view to open a specific user profile and monitor their order history, active items in cart, and saved addresses is missing (this is vital for Customer Support Agents).
+            </li>
+            <li>
+                <strong><code>/admin/reports</code> (Analytics & Export Page):</strong> The dashboard only displays card metrics. A frontend control panel to download or export sales data, tax reports, or low-stock items into CSV/Excel formats is missing.
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>3. Frontend State Contract Extensions (Core FE Logic)</h2>
+        <p>The state contract must explicitly address and handle these specific rules and UI states:</p>
+        
+        <h3>Form Layer & Validation Extensions</h3>
+        <ul>
+            <li><strong>Dirty Form Guard (Unsaved Changes Warning):</strong> If an admin is editing a product or a customer is filling out the checkout form and accidentally hits the back button, the browser/router should intercept it with an alert ("Are you sure you want to leave? Unsaved changes will be lost").</li>
+            <li><strong>Dynamic Attribute Matrix Generator:</strong> When an admin selects attributes like carat or metal in the admin panel, the frontend should dynamically generate all possible combinations (SKUs) into a clean data table where the admin can easily populate the price and stock for each variant.</li>
+        </ul>
+
+        <h3>Optimization & UX States</h3>
+        <ul>
+            <li><strong>Skeleton Loaders Strategy:</strong> Avoid generic spinners across data-fetching pages. Instead, implement layout-specific Shimmer/Skeleton components (e.g., card skeletons for the product listing grid).</li>
+            <li><strong>Network Status Toast (Offline/Online Sync):</strong> If a user attempts to place an order and their internet drops, the frontend must immediately display a status overlay to prevent duplicate charges or API calls.</li>
+            <li><strong>Infinite Scroll vs. Pagination State UI:</strong> If the product list utilizes infinite scrolling, the frontend must sync the page state inside the URL query parameters so that clicking the back button preserves the exact scroll position (Scroll Restoration).</li>
+        </ul>
+
+        <h3>Security & Storage Contract</h3>
+        <ul>
+            <li><strong>Token Expiry Warning (Session Timeout Modal):</strong> If the JWT access token is nearing its expiration (especially critical within the Admin app), display a modal warning that gives the user a chance to explicitly extend their session.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>4. Missing Fields in TypeScript Types</h2>
+        <p>These fundamental types will be required when building out your UI components, but are currently missing from your type layer:</p>
+        
+<pre><code><span class="comment">// 1. Image upload state (For form handling states)</span>
+<span class="keyword">export type</span> <span class="type">ImageUploadProgress</span> = {
+  file: <span class="type">File</span>;
+  progress: <span class="type">number</span>; <span class="comment">// Values ranging from 0 to 100</span>
+  status: <span class="text-main">"idle" | "uploading" | "success" | "error"</span>;
+  previewUrl: <span class="type">string</span>;
+};
+
+<span class="comment">// 2. Sorting options contract (For URL Query State synchronization)</span>
+<span class="keyword">export type</span> <span class="type">ProductSortOption</span> = <span class="text-main">"price_asc" | "price_desc" | "newest" | "rating"</span>;
+
+<span class="comment">// 3. Global Toast notification state for application layout</span>
+<span class="keyword">export type</span> <span class="type">ToastNotification</span> = {
+  id: <span class="type">string</span>;
+  type: <span class="text-main">"success" | "error" | "info" | "warning"</span>;
+  message: <span class="type">string</span>;
+  duration?: <span class="type">number</span>;
+};</code></pre>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--accent-green);">
+        <h2>Summary Roadmap (What you need to add):</h2>
+        <ul>
+            <li><strong>Routes:</strong> <code>/checkout/payment</code>, <code>/admin/cms</code> (for handling Banners & Promos), and dedicated 404/500 error pages.</li>
+            <li><strong>UI Components:</strong> An Unsaved Changes dialog blocker for forms, an automated matrix variant generator for the Admin panel, and tailored skeleton shimmers.</li>
+            <li><strong>UX Logic:</strong> Scroll-position preservation for the Product Grid and multi-step checkout state persistence in local storage (ensuring no data loss if a user refreshes the page mid-checkout).</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
